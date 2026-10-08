@@ -6,8 +6,7 @@ import dev.j3fftw.worldeditslimefun.commands.WorldEditSlimefunCommands;
 import dev.j3fftw.worldeditslimefun.listeners.RegistryListener;
 import dev.j3fftw.worldeditslimefun.slimefun.Items;
 import dev.j3fftw.worldeditslimefun.listeners.WandListener;
-import com.github.drakescraft_labs.slimefun4.api.SlimefunAddon;
-import com.github.drakescraft_labs.slimefun4.libraries.dough.updater.BlobBuildUpdater;
+import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.PluginManager;
@@ -28,10 +27,6 @@ public final class WorldEditSlimefun extends JavaPlugin implements SlimefunAddon
 
         if (!new File(getDataFolder(), "config.yml").exists()) {
             saveDefaultConfig();
-        }
-
-        if (getConfig().getBoolean("auto-update", true) && getDescription().getVersion().startsWith("DEV - ")) {
-            new BlobBuildUpdater(this, getFile(), "WorldEditSlimefun", "Dev").start();
         }
 
 
