@@ -1,7 +1,6 @@
 package dev.j3fftw.worldeditslimefun;
 
 
-import com.github.drakescraft_labs.labupdate.DrakesLabsReleaseUpdate;
 import dev.j3fftw.worldeditslimefun.commands.WorldEditSlimefunCommands;
 import dev.j3fftw.worldeditslimefun.listeners.RegistryListener;
 import dev.j3fftw.worldeditslimefun.slimefun.Items;
@@ -22,7 +21,6 @@ public final class WorldEditSlimefun extends JavaPlugin implements SlimefunAddon
 
     @Override
     public void onEnable() {
-        DrakesLabsReleaseUpdate.schedule(this, "WorldEditSlimefun-drake");
 
         instance = this;
 
