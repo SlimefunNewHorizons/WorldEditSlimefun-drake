@@ -9,6 +9,8 @@ jobs:
 
     name: Upload Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     if: contains(github.event.head_commit.message, '[ci skip]') == false
 
     steps:
@@ -20,6 +22,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: 21
+          cache: 'maven'
       - name: Build with Maven
         run: mvn -B package
       - name: Upload to Blob Builds
