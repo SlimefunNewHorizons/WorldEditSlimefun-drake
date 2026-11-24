@@ -1,55 +1,18 @@
-name: Deploy
-
+name: Publish
 on:
   push:
-    branches: [ main ]
-
+    branches: [port-26x]
+    paths: ['src/**', 'pom.xml']
+  release:
+    types: [published]
+  workflow_dispatch:
+permissions:
+  contents: read
 jobs:
   publish:
-
-    name: Upload Release
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    if: contains(github.event.head_commit.message, '[ci skip]') == false
-
-    steps:
-      - uses: actions/checkout@v3
-      - name: Replace version
-        run: sed -i "s/UNOFFICIAL/$GITHUB_RUN_NUMBER/g" pom.xml
-      - name: Set up JDK 21
-        uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: 21
-          cache: 'maven'
-      - name: Build with Maven
-        run: mvn -B package
-      - name: Upload to Blob Builds
-        if: env.BLOB_TOKEN != ''
-        env:
-          BLOB_TOKEN: ${{ secrets.BLOB_BUILDS_API_TOKEN }}
-        uses: WalshyDev/blob-builds/gh-action@main
-        with:
-          project: WorldEditSlimefun
-          apiToken: ${{ secrets.BLOB_BUILDS_API_TOKEN }}
-          file: ./target/WorldEditSlimefun-drake.jar
-          releaseNotes: ${{ github.event.head_commit.message }}
-      - name: Create a Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.run_number }}
-          release_name: Build ${{ '#' }}${{ github.run_number }}
-      - name: Upload Module Asset
-        id: upload-release-asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/WorldEditSlimefun-drake.jar
-          asset_name: WorldEditSlimefun-drake.jar
-          asset_content_type: application/jar
+    uses: SlimefunNewHorizons/.github/.github/workflows/publish-blob.yml@main
+    with:
+      project: WorldEditSlimefun
+      java-version: '25'
+      blob: ${{ github.event_name != 'workflow_dispatch' }}
+    secrets: inherit
